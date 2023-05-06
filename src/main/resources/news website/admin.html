@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Articles</title>
+    <!-- google font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- webfonts for icons -->
+    <link rel="stylesheet" href="css/all.min.css" />
+    <!-- normal styling -->
+    <link rel="stylesheet" href="css/normalize.css" />
+    <!-- Latest compiled and minified CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="css/header-style.css" />
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+
+      table caption {
+        text-align: center;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        font-size: 18px;
+        color: #333;
+        background-color: #f6f6f6;
+        width: fit-content;
+        padding: 10px;
+        margin: 20px auto;
+        position: relative;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+          rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
+          rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+      }
+      table caption::after {
+        content: "";
+        position: absolute;
+        bottom: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border-width: 10px;
+        border-top-color: #f1f1f1;
+        border-bottom-color: transparent;
+        border-right-color: transparent;
+        border-left-color: transparent;
+        border-style: solid;
+        z-index: 1000;
+      }
+      thead {
+        text-align: center;
+      }
+      thead tr {
+        background-color: #333;
+        color: #fff;
+        text-transform: capitalize;
+      }
+      form input,
+      #edit {
+        background-color: rgb(18, 224, 62);
+        color: #f6f6f6;
+        text-transform: capitalize;
+        display: inline-block;
+        margin-top: 8px;
+        padding: 6.5px 16px;
+        border-radius: 5px;
+        text-decoration: none;
+      }
+
+      ::selection {
+        background-color: #0af;
+        color: #fff;
+      }
+      .admin-links {
+        text-align: end;
+        margin: 15px 15px 0;
+      }
+      #addArticle,
+      #addMatch {
+        color: #fff;
+        background-color: #817979;
+        text-decoration: none !important;
+        padding: 10px 13px;
+        border-radius: 5px;
+      }
+      .btns {
+        display: flex;
+      }
+      .btn-danger {
+        margin-left: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <div class="header-container">
+          <div class="logo">
+            <h2>Sport News</h2>
+          </div>
+          <div class="search">
+            <input type="text" placeholder="Search Here" name="search" />
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </div>
+          <div class="loggin">
+            <a href="login.html">Logout</a
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="admin-links">
+      <a href="addArticle.html" id="addArticle">Add Article</a>
+      <a href="addMatch.html" id="addMatch">Add Match</a>
+      <a href="addTeam.html" id="addMatch">Add Team</a>
+    </div>
+    <div class="container articles">
+      <table class="table table-striped">
+        <caption>
+          All Articles
+        </caption>
+        <thead>
+          <tr>
+            <th>id</th>
+            <th>title</th>
+            <th>section</th>
+            <th>image</th>
+            <th>action</th>
+          </tr>
+        </thead>
+        <tbody class="tbody" id="tbody"></tbody>
+      </table>
+    </div>
+    <div class="container articles">
+      <table class="table table-striped">
+        <caption>
+          All matches
+        </caption>
+        <thead>
+          <tr>
+            <th>id</th>
+            <th>home team</th>
+            <th>home team score</th>
+            <th>date</th>
+            <th>time</th>
+            <th>away team score</th>
+            <th>away team</th>
+            <th>Section</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody class="tbody2" id="tbody2"></tbody>
+      </table>
+    </div>
+    <div class="container articles">
+      <table class="table table-striped">
+        <caption>
+          All teams
+        </caption>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>logo url</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody class="tbody3" id="tbody3">
+
+        </tbody>
+      </table>
+    </div>
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script>
+      //////////////////////////////////////////////////////
+      let mainContainer = document.getElementById("tbody");
+      //   const list = document.createDocumentFragment();
+      const url = "http://localhost:8088/news";
+
+      fetch(url)
+        .then((response) => response.json())
+        .then((articles) => {
+          articles.forEach((article) => {
+            console.log("hello");
+            const articleDiv = document.createElement("tr");
+            articleDiv.innerHTML = `
+                    
+
+                    <tr>
+                        <td>${article.id}</td>
+                        <td>${article.title}</td>
+                        <td>${article.section}</td>
+                        <td>${article.imageUrl}</td>
+                        <td class="btns">
+                            <form method="GET">
+                                <!-- <input type="submit" value="update" name="update" > -->
+
+
+                                <!--<button class="btn btn-success update-btn" data-id="${article.id}" data-url="editArticle.html?id=${article.id}">Update</button>-->
+                                
+
+                                <a href="editArticle.html?id=${article.id}"  id="edit"> edit </a>
+
+                            
+                            
+                                <!-- <input type="submit" value="delete" name="delete"> -->
+                                <button class="btn btn-danger delete-btn " data-id="${article.id}">Delete</button>
+
+                            </form>
+                        </td>
+                    </tr>
+                      `;
+            mainContainer.appendChild(articleDiv);
+          });
+
+          // Add event listener to all delete buttons
+          const deleteButtons = document.querySelectorAll(".delete-btn");
+          deleteButtons.forEach((button) => {
+            button.addEventListener("click", (event) => {
+              const articleId = event.target.dataset.id;
+              deleteArticle(articleId);
+            });
+          });
+        })
+        .catch((error) => console.error(error));
+
+      // Function to delete an article by its id
+      function deleteArticle(articleId) {
+        fetch(`http://localhost:8088/news/delete-article/${articleId}`, {
+          method: "DELETE",
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(`Article ${articleId} deleted successfully.`);
+            // Remove the deleted article from the DOM
+            const articleRow = document.getElementById(articleId).parentNode;
+            articleRow.parentNode.removeChild(articleRow);
+          })
+          .catch((error) => console.error(error));
+      }
+
+      /////////////////////////////////////////////////////
+      //////////////////////////////////////////////////////
+      //   const list = document.createDocumentFragment();
+      
+      let containerTeams = document.getElementById("tbody3");
+      const url3 = "http://localhost:8088/teams";
+
+      fetch(url3)
+        .then((response) => response.json())
+        .then((teams) => {
+          teams.forEach((team) => {
+            const teamDiv = document.createElement("tr");
+            teamDiv.innerHTML = `
+              
+
+              <tr>
+                  <td>${team.name}</td>
+                  <td>${team.logoUrl}</td>
+                  <td class="btns">
+                      <form method="GET">
+                          <!-- <input type="submit" value="update" name="update" > -->
+
+
+                          <!--<button class="btn btn-success update2-btn" data-id="${team.name}" data-url="editTeam.html?team=${team.name}">Update</button>-->
+                          
+
+                          <a href="editTeam.html?team=${team.name}"  id="edit"> edit </a>
+
+                      
+                      
+                          <!-- <input type="submit" value="delete" name="delete"> -->
+                          <button class="btn btn-danger delete2-btn " data-id="${team.name}">Delete</button>
+
+                      </form>
+                  </td>
+              </tr>
+                `;
+                containerTeams.appendChild(teamDiv);
+          });
+
+          // Add event listener to all delete buttons
+          const deleteButtons = document.querySelectorAll(".delete2-btn");
+          deleteButtons.forEach((button) => {
+            button.addEventListener("click", (event) => {
+              const teamId = event.target.dataset.id;
+              deleteTeam(teamId);
+              console.log("team deleted");
+            });
+          });
+        })
+        .catch((error) => console.error(error));
+
+      // Function to delete an team by its id
+      function deleteTeam(teamId) {
+        fetch(`http://localhost:8088/teams/delete-team/${teamId}`, {
+          method: "DELETE",
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(`Team ${teamId} deleted successfully.`);
+            // Remove the deleted team from the DOM
+            const teamRow = document.getElementById(teamId).parentNode;
+            teamRow.parentNode.removeChild(teamRow);
+          })
+          .catch((error) => console.error(error));
+      }
+
+      //////////////////////////////////////////////////////
+      let containerMatchs = document.getElementById("tbody2");
+      //   const list = document.createDocumentFragment();
+      const url1 = "http://localhost:8088/matchs?section=";
+
+      fetch(url1)
+        .then((response) => response.json())
+        .then((matchs) => {
+          matchs.forEach((match) => {
+            const matchDiv = document.createElement("tr");
+            matchDiv.innerHTML = `
+              
+
+              <tr>
+                  <td>${match.id}</td>
+                  <td>${match.homeTeamName}</td>
+                  <td>${match.homeTeamScore}</td>
+                  <td>${match.matchDate}</td>
+                  <td>${match.time}</td>
+                  <td>${match.awayTeamName}</td>
+                  <td>${match.homeTeamScore}</td>
+                  <td>${match.section}</td>
+                  <td class="btns">
+                      <form method="GET">
+                          <!-- <input type="submit" value="update" name="update" > -->
+
+
+                          <!--<button class="btn btn-success update-btn" data-id="${match.id}" data-url="editMatch.html?id=${match.id}">Update</button>-->
+                          
+
+                          <a href="editMatch.html?id=${match.id}" id="edit"> edit </a>
+
+                      
+                      
+                          <!-- <input type="submit" value="delete" name="delete"> -->
+                          <button class="btn btn-danger delete-btn " data-id="${match.id}">Delete</button>
+
+                      </form>
+                  </td>
+              </tr>
+                `;
+            containerMatchs.appendChild(matchDiv);
+          });
+
+          const deleteButtons = document.querySelectorAll(".delete-btn");
+          deleteButtons.forEach((button) => {
+            button.addEventListener("click", (event) => {
+              const matchId = event.target.dataset.id;
+              deleteMatch(matchId);
+            });
+          });
+        })
+        .catch((error) => console.error(error));
+
+      function deleteMatch(matchId) {
+        fetch(`http://localhost:8088/matchs/delete-match/${matchId}`, {
+          method: "DELETE",
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(`Match ${matchId} deleted successfully.`);
+            const matchRow = document.getElementById(matchId).parentNode;
+            matchRow.parentNode.removeChild(matchRow);
+          })
+          .catch((error) => console.error(error));
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Match</title>
+    <!-- google font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- webfonts for icons -->
+    <link rel="stylesheet" href="css/all.min.css">
+    <!-- normal styling -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <!-- file css -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-image: linear-gradient(to bottom, #99f, #39d);
+        }
+        h2 {
+            text-align: center;
+            color: #fff;
+        }
+        .add-match {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        form {
+            /* border: 1px solid #eee; */
+            padding: 10px 20px;
+            width: 430px;
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+        }
+        .content {
+            display: block;
+            width: 90%;
+            margin: 20px auto;
+            border: none;
+            border-radius: 7px;
+            /* padding: 10px; */
+            /* margin: 10px auto; */
+        }
+        input[type=text], select ,#image {
+            padding: 10px;
+        }
+        .content label {
+            display: block;
+            margin-bottom: 0;
+        }
+        .content input, .content select, #image {
+            display: block;
+            width: 100%;
+            border-radius: 7px;
+        }
+        form input:first-of-type, select,option {
+            background-color: #fff;
+            border: none;
+            outline: none;
+        }
+        form input[type=file] {
+            background-color: #fff;
+            color: #333;
+        }
+        form input[type=submit],
+        form input[type=reset] {
+            background-color: #333;
+            color: #fff;
+            text-transform: capitalize;
+            border: none;
+            padding: 5px 10px;
+            width: 70px;
+            border-radius: 10px;
+        }
+        /* label {
+            text-align: left;
+            color: #333;
+        } */
+        #image {
+            cursor: pointer;
+            position: relative;
+            background-color: #f6f6f6;
+        }
+        #image:hover i {
+            color: #333;
+            opacity: 1;
+        }
+        #image i {
+            padding: 4px 20px;
+            height: 100%;
+            color: #333;
+            opacity: 0.9;
+            position: absolute;
+            top: 0;
+            right: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        #inputTag {
+            display: none;
+        }
+        .action {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="add-match">
+            <form method="post">
+                <h2>Add Match</h2>
+                <div class="content">
+                    <select name="sports">
+                        <option>football</option>
+                        <option>basketball</option>
+                        <option>tennis</option>
+                        <option>volleyball</option>
+                    </select>
+                </div>
+                <div class="content">
+                    <input type="text" placeholder="Home team name (put the correct name)" name="homeTeamName" id="homeTeamName">
+                </div>
+                <div class="content">
+                    <input type="text" placeholder="Away team name (put the correct name)" name="awayTeamName" id="awayTeamName">
+                </div>
+                <div class="content">
+                    <input type="text" placeholder="Home team score" name="homeTeamScore" id="homeTeamScore">
+                </div>
+                <div class="content">
+                    <input type="text" placeholder="Away team score" name="awayTeamScore" id="awayTeamScore">
+                </div>
+                <div class="content">
+                    <input type="text" placeholder="Date Of Match" name="matchDate" id="matchDate">
+                </div>
+                <div class="content">
+                    <input type="text" placeholder="Time Of Match" name="time" id="time">
+                </div>
+                
+                <div class="action">
+                    <input type="submit" name="submit" id="submit" value="submit">
+                    <input type="reset" name="reset" value="reset">
+                </div>
+            </form>
+        </div>
+    </div>
+     <!-- jQuery library -->
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+     <!-- Latest compiled JavaScript -->
+     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+     <script>
+              ///////////////////////////////////add article ////////////////
+
+      document
+      .getElementById("submit")
+      .addEventListener("click", function (event) {
+        event.preventDefault();
+        var homeTeamName = document.getElementById("homeTeamName").value;
+        var awayTeamName = document.getElementById("awayTeamName").value;
+        var section = document.getElementsByName("sports")[0].value;
+        var homeTeamScore = document.getElementById("homeTeamScore").value;
+        var awayTeamScore = document.getElementById("awayTeamScore").value;
+        var matchDate = document.getElementById("matchDate").value;
+        var time = document.getElementById("time").value;
+
+        var formData = new FormData();
+        formData.append("homeTeamName", homeTeamName);
+        formData.append("awayTeamName", awayTeamName);
+        formData.append("homeTeamScore", homeTeamScore);
+        formData.append("awayTeamScore", awayTeamScore);
+        formData.append("section", section);
+        formData.append("matchDate", matchDate);
+        formData.append("time", time);
+       
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://localhost:8088/matchs/add-match");
+        xhr.onload = function () {
+          if (xhr.status === 200) {
+            alert("Article added successfully!");
+          } else {
+            alert("Failed to add article.");
+          }
+        };
+        xhr.send(formData)
+      });
+     </script>
+</body>
+</html>

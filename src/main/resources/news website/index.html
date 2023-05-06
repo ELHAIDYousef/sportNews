@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Website</title>
+      <!-- google font -->
+      <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+      <!-- webfonts for icons -->
+      <link rel="stylesheet" href="css/all.min.css">
+      <!-- normal styling -->
+      <link rel="stylesheet" href="css/normalize.css">
+      <!-- file css -->
+      <link rel="stylesheet" href="css/style.css">
+      <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+        <header>
+        <div class="container">
+            <div class="header-container">
+                <div class="logo">
+                    <h2>Sport News</h2>
+                </div>
+                    <div class="search">
+                        <input type="text" placeholder="Search Here" name="search" id="search">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                    <div class="loggin">
+                            <a href="login.html">Login</a>
+                    </div>
+                    
+            </div>
+        </div>
+        </header>
+        <div class='content'>
+        <div class="container">
+        <div class="dashboard">
+            <nav>
+                <ul>
+                    <li class="active">
+                        <i class="fa-solid fa-house"></i>
+                        <a href="#" id="home" class="anchor">Home</a>                    
+                    </li>
+                    <li class="drop">
+                        <button class="dropdown-btn">
+                            <a href="#" id="match" class="anchor">Matchs</a>
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <div class="dropdown-container">
+                            <a href="#" name="football"id="football">football</a>
+                            <a href="#" id="basketball">basketball</a>
+                            <a href="#" id="tennis">tennis</a>
+                            <a href="#" id="volleyball">volleyball</a>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-comment"></i>
+                        <a href="#" id="feedback" class="anchor">Feedback</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <main class="main" id="main">
+            <div class="main-container" id="main-container">
+
+
+
+            </div>
+            <div class="matchs" id="matchs">
+            <h2>Best Matchs</h2>
+            
+            
+            </div>
+             <!-- start info -->
+    <div class="info" id="info">
+            <h2 class="special-heading">info</h2>
+            <form>
+                <input type="email" placeholder="Email" required>
+                <textarea placeholder="Message"></textarea>
+                <div class="submit"><input type="submit" value="Send message"></div>
+            </form>
+    </div>
+    <!-- end of info -->
+
+        </main>
+       
+
+    <script src="js/main.js"></script>
+<script>
+
+    ///////////////////////////////////////////////////
+    let mainContainer = document.getElementById('main-container');
+      const url = `http://localhost:8088/news?keyword=`;
+
+      let match = document.getElementById("match");
+let matchs = document.querySelector(".matchs");
+let home = document.getElementById("home");
+let about = document.getElementById("about");
+let contact = document.getElementById("contact");
+let feedback = document.getElementById("feedback");
+let allMainContent = Array.from(document.querySelectorAll(".main > div"));
+let football = document.getElementById("football");
+let basketball = document.getElementById("basketball");
+let tennis= document.getElementById("tennis");
+let volleyball = document.getElementById("volleyball");
+let dropdownBtn = document.querySelector(".drop");
+let dropdownContainer = document.querySelector(".dropdown-container");
+let info = document.getElementById("info");
+
+let main = document.getElementById('matchs');
+    
+      fetch(url)
+          .then(response => response.json())
+          .then(articles => {
+              articles.forEach(article => {
+                  const articleDiv = document.createElement('div');
+                  let arr = article.content.split(" ") ;
+                  let cont = "";
+                  for (let i=0 ; i<10 ; i++){
+                    cont+=arr[i] + " ";
+                  }
+                  cont += " ..."
+                  console.log(arr);
+                  articleDiv.innerHTML = `
+                <div class="content">
+                       <div class="news-img">
+                        <input type="text" value="${article.id}" name="id" hidden>
+                        <img src="imgs/articles/${article.imageUrl}" alt="">
+                        <span>${article.section}</span>
+                    </div>
+                    <div class="news-content">
+                        <h3 >${article.title}</h3>
+                        <p > ${cont}</p>
+                        <span class="news-date">${article.publishDate}</span>
+                        <a href="more.html?id=${article.id}" >Read More</a>
+                    </div>
+                </div>
+                  `;
+                  mainContainer.appendChild(articleDiv);
+              });
+          })
+          .catch(error => console.error(error));
+        
+
+    ///////////////////////////////////////
+    
+    // Get the input field
+var input = document.getElementById("search");
+
+// Execute a function when the user releases a key on the keyboard
+input.addEventListener("keyup", function(event) {
+  // Number 13 is the "Enter" key on the keyboard
+  if (event.keyCode === 13) {
+    console.log("sdjkvhjksd")
+    
+        const keyword = event.target.value;
+        mainContainer.innerHTML=""
+
+    let container = document.getElementById('main-container');
+      const url = `http://localhost:8088/news?keyword=${keyword}`;
+    
+      fetch(url)
+          .then(response => response.json())
+          .then(articles => {
+              articles.forEach(article => {
+                  const articleDiv = document.createElement('div');
+                  let arr = article.content.split(" ") ;
+                  let cont = ""; 
+                  for (let i=0 ; i<10 ; i++){
+                    cont+=arr[i] + " ";
+                  }
+                  cont += " ..."
+                  console.log(arr);
+                  articleDiv.innerHTML = `
+                <div class="content">
+                       <div class="news-img">
+                        <input type="text" value="${article.id}" name="id" hidden>
+                        <img src="imgs/articles/${article.imageUrl}" alt="">
+                        <span>${article.section}</span>
+                    </div>
+                    <div class="news-content">
+                        <h3 >${article.title}</h3>
+                        <p > ${cont}</p>
+                        <span class="news-date">${article.publishDate}</span>
+                        <a href="#">Read More</a>
+                    </div>
+                </div>
+                  `;
+                  container.appendChild(articleDiv);
+              });
+          })
+          .catch(error => console.error(error));
+        
+  }
+});
+    
+
+    
+         
+             
+
+          //   ul.appendChild(list);
+
+
+home.addEventListener("click", function () {
+    allMainContent.forEach(ele => {
+        ele.style.display = "none";
+    });
+    mainContainer.style.display = "flex";
+    dropdownContainer.style.display = "none";
+    
+});
+dropdownBtn.addEventListener("click", function () {
+    if(dropdownContainer.style.display == "none") {
+        dropdownContainer.style.display = "block";
+    } else {
+        dropdownContainer.style.display = "none";
+    }
+});
+
+football.addEventListener("click", function () {
+    allMainContent.forEach(ele => {
+        ele.style.display = "none";
+    });
+    matchs.style.display = "block";
+    main.innerHTML="";
+    let ss ="football";
+    const url2 = `http://localhost:8088/matchs?section=${ss}`;
+    fetch(url2)
+          .then(response => response.json())
+          .then(matchs => {
+              matchs.forEach(match => {
+                  const matchDiv = document.createElement('div');
+                  matchDiv.classList.add="matchs";
+                  matchDiv.innerHTML = `
+                  
+                    <div class="matchs-container">
+                        <div class="team1">
+                            <div class="img"><img src="/imgs/logo/${match.file1}"></div>
+                            <p>${match.homeTeamName}</p>
+                        </div>
+                        <div class="result">
+                            <div><span>${match.homeTeamScore}</span>:<span>${match.awayTeamScore}</span></div>
+                            <p>${match.matchDate}</p>
+                            <p>${match.time}</p>
+                        </div>
+                        <div class="team2">
+                            <div class="img"><img src="/imgs/logo/${match.file2}"></div>
+                            <p>${match.awayTeamName}</p>
+                        </div>
+                    </div>
+                    
+                   
+                  `;
+                  main.appendChild(matchDiv);
+              });
+          })
+          .catch(error => console.error(error));
+   
+});
+
+basketball.addEventListener("click", function () {
+    allMainContent.forEach(ele => {
+        ele.style.display = "none";
+    });
+    matchs.style.display = "block";
+    main.innerHTML="";
+    let ss = "basketball";
+    const url2 = `http://localhost:8088/matchs?section=${ss}`;
+    fetch(url2)
+          .then(response => response.json())
+          .then(matchs => {
+              matchs.forEach(match => {
+                  const matchDiv = document.createElement('div');
+                  matchDiv.classList.add="matchs";
+                  matchDiv.innerHTML = `
+                  
+                    <div class="matchs-container">
+                        <div class="team1">
+                            <div class="img"><img src="/imgs/logo/${match.file1}"></div>
+                            <p>${match.homeTeamName}</p>
+                        </div>
+                        <div class="result">
+                            <div><span>${match.homeTeamScore}</span>:<span>${match.awayTeamScore}</span></div>
+                            <p>${match.matchDate}</p>
+                            <p>${match.time}</p>
+                        </div>
+                        <div class="team2">
+                            <div class="img"><img src="/imgs/logo/${match.file2}"></div>
+                            <p>${match.awayTeamName}</p>
+                        </div>
+                    </div>
+                    
+                   
+                  `;
+                  main.appendChild(matchDiv);
+              });
+          })
+          .catch(error => console.error(error));
+    console.log(ss)
+});
+
+
+tennis.addEventListener("click", function () {
+    allMainContent.forEach(ele => {
+        ele.style.display = "none";
+    });
+    matchs.style.display = "block";
+    main.innerHTML="";
+    let ss = "tennis";
+    const url2 = `http://localhost:8088/matchs?section=${ss}`;
+    fetch(url2)
+          .then(response => response.json())
+          .then(matchs => {
+              matchs.forEach(match => {
+                  const matchDiv = document.createElement('div');
+                  matchDiv.classList.add="matchs";
+                  matchDiv.innerHTML = `
+                  
+                    <div class="matchs-container">
+                        <div class="team1">
+                            <div class="img"><img src="/imgs/logo/${match.file1}"></div>
+                            <p>${match.homeTeamName}</p>
+                        </div>
+                        <div class="result">
+                            <div><span>${match.homeTeamScore}</span>:<span>${match.awayTeamScore}</span></div>
+                            <p>${match.matchDate}</p>
+                            <p>${match.time}</p>
+                        </div>
+                        <div class="team2">
+                            <div class="img"><img src="/imgs/logo/${match.file2}"></div>
+                            <p>${match.awayTeamName}</p>
+                        </div>
+                    </div>
+                    
+                   
+                  `;
+                  main.appendChild(matchDiv);
+              });
+          })
+          .catch(error => console.error(error));
+    console.log(ss)
+});
+volleyball.addEventListener("click", function () {
+    allMainContent.forEach(ele => {
+        ele.style.display = "none";
+    });
+    matchs.style.display = "block";
+    main.innerHTML="";
+    let ss = "volleyball";
+    const url2 = `http://localhost:8088/matchs?section=${ss}`;
+    fetch(url2)
+          .then(response => response.json())
+          .then(matchs => {
+              matchs.forEach(match => {
+                  const matchDiv = document.createElement('div');
+                  matchDiv.classList.add="matchs";
+                  matchDiv.innerHTML = `
+                  
+                    <div class="matchs-container">
+                        <div class="team1">
+                            <div class="img"><img src="/imgs/logo/${match.file1}"></div>
+                            <p>${match.homeTeamName}</p>
+                        </div>
+                        <div class="result">
+                            <div><span>${match.homeTeamScore}</span>:<span>${match.awayTeamScore}</span></div>
+                            <p>${match.matchDate}</p>
+                            <p>${match.time}</p>
+                        </div>
+                        <div class="team2">
+                            <div class="img"><img src="/imgs/logo/${match.file2}"></div>
+                            <p>${match.awayTeamName}</p>
+                        </div>
+                    </div>
+                    
+                   
+                  `;
+                  main.appendChild(matchDiv);
+              });
+          })
+          .catch(error => console.error(error));
+    console.log(ss)
+});
+
+
+    
+      //////////////////////////
+      feedback.onclick = function () {
+        allMainContent.forEach(ele => {
+            ele.style.display = "none";
+        });
+        info.style.display = "block";
+    }
+      /////////////////////////
+    
+
+
+
+</script>
+</body>
+</html>

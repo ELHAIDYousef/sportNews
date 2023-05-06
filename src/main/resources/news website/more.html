@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>One Article</title>
+    <!-- google font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- webfonts for icons -->
+    <link rel="stylesheet" href="css/all.min.css" />
+    <!-- normal styling -->
+    <link rel="stylesheet" href="css/normalize.css" />
+    <!-- file css -->
+    <!-- Latest compiled and minified CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    />
+    <style>
+      /* glabal styles */
+      *,
+      ::before,
+      ::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      :root {
+        --mainColor: #0af;
+        --secondColor: #f6f6f6;
+        --grayColor: #999;
+        --blackColor: #333;
+      }
+      body {
+      }
+      .container {
+        margin-top: 40px;
+      }
+      body,
+      html {
+        overflow-x: hidden;
+      }
+      body {
+        width: 100%;
+        height: 100vh;
+        font-family: "cairo", "sans-serif";
+      }
+      h2 {
+        text-transform: capitalize;
+      }
+      .img {
+        width: 50%;
+        height: 400px;
+        border-radius: 20px;
+      }
+      .img,
+      .content {
+        display: inline-block;
+      }
+      .content {
+        width: 50%;
+        float: right;
+        padding-left: 20px;
+      }
+      .img img {
+        width: 100%;
+        height: 400px;
+      }
+      p {
+        color: #999;
+        margin-top: 20px;
+        line-height: 1.7;
+        font-size: 19px;
+        text-indent: 20px;
+        word-spacing: 2px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="img" id="img">
+        <img src="" />
+        <p id="date"></p>
+      </div>
+      <div class="content">
+        <h2 id="title" name="title"></h2>
+        <p id="des"></p>
+      </div>
+    </div>
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        // get the match id from the URL
+        var urlParams = new URLSearchParams(window.location.search);
+        var matchId = urlParams.get("id");
+
+        // fetch the match details from the API
+        var apiUrl = "http://localhost:8088/news/get/" + matchId;
+        $.getJSON(apiUrl, function (article) {
+          // set the article title
+          $("#title").text(article.title);
+
+          $("#des").text(article.content);
+          $("#date").text(article.publishDate);
+
+          $(".img img").attr("src", "imgs/articles/" + article.imageUrl);
+
+        });
+      });
+    </script>
+  </body>
+</html>
